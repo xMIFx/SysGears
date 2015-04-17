@@ -24,8 +24,12 @@ public class BiggestConcatWord {
 
 
     private static String[] CreateArray() {
-        // I don't now is it a problem, but in my example concatWord can include one word unlimited number of times
-        return new String[]{"hi", "abc", "acd", "to", "toabcdevf", "de", "vf", "devf", "ads", "rrt","toabcdevfs","adsacdtoabcdevfr","hihihihihihihihihihihihi"};
+        // I don't now is it a problems, but in my example:
+        // concatWord can include one word unlimited number of times
+        // if we have same word, it think that one word include other.
+        //return new String[]{"hi", "abc", "acd", "to", "toabcdevf", "de", "vf", "devf", "ads", "rrt","toabcdevfs","adsacdtoabcdevfr","hihihihihihihihihihihihi"};
+        return new String[]{"hi", "abc", "acd", "to", "toabcdevf", "de", "vf", "devf", "ads", "rrt","toabcdevfs","adsacdtoabcdevfr"};
+        //return new String[]{"abcd","abc","abcde","ab","cd","abcdefghjklmnop","abcdefgh","abcdefghjklmnop"};
     }
 
     private static void SortArrayByLength(String[] array) {

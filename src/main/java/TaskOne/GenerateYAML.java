@@ -17,6 +17,19 @@ public class GenerateYAML {
     public static void main(String[] args) throws IOException {
 
         // Generate array
+        int[] arrayToFile = CreateArray();
+        File file = new File("D://SysGearsTest.txt");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        OutputStream out = new FileOutputStream(file);
+        YamlEncoder enc = new YamlEncoder(out);
+        enc.writeObject(arrayToFile);
+        enc.close();
+        out.close();
+    }
+
+    private static int[] CreateArray() {
         //Sets the range for the random number
         int min = 0;
         int maxCountOfNumbers = 500000; //800 000 generate about 3 minutes
@@ -29,7 +42,7 @@ public class GenerateYAML {
         }
         System.out.println(countOfNumbers);
         // I need to remove one element and add every element in random position, so i use ArrayList, not array.
-       List<Integer> array = new ArrayList<>(countOfNumbers);
+        List<Integer> array = new ArrayList<>(countOfNumbers);
         //fill an array with random numbers
         for (int i = 0; i < countOfNumbers; i = i + 2) {
             int newNumber = min + (int) (Math.random() * ((max - min) + 1));
@@ -41,19 +54,11 @@ public class GenerateYAML {
         int positionForRemove = 0 + (int) (Math.random() * (((array.size() - 1) - 0) + 1));
         array.remove(positionForRemove);
         // create array
-        int[] arrayToFile =  new int[countOfNumbers - 1];
+        int[] arrayToFile = new int[countOfNumbers - 1];
         int contIter = 0;
         for (Integer res : array) {
             arrayToFile[contIter++] = res.intValue();
         }
-        File file = new File("D://SysGearsTest.txt");
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-        OutputStream out = new FileOutputStream(file);
-        YamlEncoder enc = new YamlEncoder(out);
-        enc.writeObject(arrayToFile);
-        enc.close();
-        out.close();
+        return arrayToFile;
     }
 }

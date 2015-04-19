@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public class GenerateYAML {
     public static void main(String[] args) throws IOException {
 
         // Generate array
-        int[] arrayToFile = CreateArray();
+        int[] arrayToFile = CreateArray();//{0,1,2,1,2,0,3};//
         File file = new File("D://SysGearsTest.txt");
         if (!file.exists()) {
             file.createNewFile();
@@ -57,7 +56,7 @@ public class GenerateYAML {
         int[] arrayToFile = new int[countOfNumbers - 1];
         int contIter = 0;
         for (Integer res : array) {
-            arrayToFile[contIter++] = res.intValue();
+            arrayToFile[contIter++] = res;
         }
         return arrayToFile;
     }

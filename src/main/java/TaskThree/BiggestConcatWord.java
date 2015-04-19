@@ -1,15 +1,18 @@
 package TaskThree;
 
-import javax.swing.text.html.HTMLDocument;
+
 import java.util.*;
 
 /**
  * Created by bukatinvv on 17.04.2015.
  */
 public class BiggestConcatWord {
+    private static final String[] array = CreateArray();
+    private static int counterIteration = array.length;
+
     public static void main(String[] args) {
-        //create array
-        String[] array = CreateArray();
+
+
         //System.out.println(Arrays.toString(array));
         //sort by alphabetical order
         Arrays.sort(array);
@@ -28,7 +31,7 @@ public class BiggestConcatWord {
         // concatWord can include one word unlimited number of times
         // if we have same word, it think that one word include other.
         //return new String[]{"hi", "abc", "acd", "to", "toabcdevf", "de", "vf", "devf", "ads", "rrt","toabcdevfs","adsacdtoabcdevfr","hihihihihihihihihihihihi"};
-        return new String[]{"hi", "abc", "acd", "to", "toabcdevf", "de", "vf", "devf", "ads", "rrt","toabcdevfs","adsacdtoabcdevfr"};
+        return new String[]{"hi", "abc", "acd", "to", "toabcdevf", "de", "vf", "devf", "ads", "rrt", "toabcdevfs", "adsacdtoabcdevfr"};
         //return new String[]{"abcd","abc","abcde","ab","cd","abcdefghjklmnop","abcdefgh","abcdefghjklmnop"};
     }
 
@@ -50,13 +53,10 @@ public class BiggestConcatWord {
         // We need to loop this list in reverse order
         Collections.reverse(strings);
         //System.out.println(strings);
-        Iterator<String> iter = strings.iterator();
-        int counterIteration = array.length;
-        while (iter.hasNext()) {
-            String s = iter.next();
-            iter.remove();
+        // int counterIteration = array.length;
+        for (String s : strings) {
             counterIteration--;
-            if (isItBiggestConcatWorld(s, array, counterIteration)) {
+            if (isItBiggestConcatWorld(s)) {
                 result = s;
                 break;
             }
@@ -64,7 +64,7 @@ public class BiggestConcatWord {
         return result;
     }
 
-    private static boolean isItBiggestConcatWorld(String s, String[] array, int counterIteration) {
+    private static boolean isItBiggestConcatWorld(String s) {
        /* System.out.println("String to find: "+s);
         System.out.println();*/
         int firstLetterToFind = 0;
@@ -82,12 +82,12 @@ public class BiggestConcatWord {
                 }
             }
             //if find some substring, then check the rest of the word. if finder part = rest of the word, then all is ok.
-            if (s.equals(finderPart)&&oldFirstLetterToFind != firstLetterToFind) {
-               // System.out.println("part is find: "+finderPart);
+            if (s.equals(finderPart) && oldFirstLetterToFind != firstLetterToFind) {
+                // System.out.println("part is find: "+finderPart);
                 biggest = true;
                 break;
-            } else if (oldFirstLetterToFind != firstLetterToFind && isItBiggestConcatWorld(s.substring(firstLetterToFind, s.length()), array, counterIteration)) {
-               // System.out.println("part is find: "+finderPart);
+            } else if (oldFirstLetterToFind != firstLetterToFind && isItBiggestConcatWorld(s.substring(firstLetterToFind))) {
+                // System.out.println("part is find: "+finderPart);
                 biggest = true;
                 break;
             } else {

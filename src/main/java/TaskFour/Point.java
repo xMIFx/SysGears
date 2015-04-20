@@ -43,7 +43,7 @@ class Point {
     }
 
     static void sortListOfPointByX(List<Point> oldListOfPoint) {
-        Comparator<Point> comparator = (o1, o2) -> o1.getX() - o2.getX();
+        Comparator<Point> comparator = (o1, o2) -> ((o1.getX() - o2.getX())!=0)?(o1.getX() - o2.getX()):(o1.getY()-o2.getY());
         Collections.sort(oldListOfPoint, comparator);
 
     }
@@ -52,7 +52,7 @@ class Point {
         Comparator<Point> comparator = new Comparator<Point>() {
             @Override
             public int compare(Point o1, Point o2) {
-                return o1.getY() - o2.getY();
+                return ((o1.getY() - o2.getY())!=0)?(o1.getY() - o2.getY()):(o1.getX() - o2.getX());
             }
         };
         Collections.sort(oldListOfPoint, comparator);

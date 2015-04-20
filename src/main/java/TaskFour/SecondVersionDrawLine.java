@@ -1,15 +1,13 @@
 package TaskFour;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Vlad on 19.04.2015.
  * If the line must be closed, we need:
  * 1. to sort array of points in ascending  by coordinate x
- * 2. take first point, then discarded all point to some array, which have coordinate Y >= first point Y. Sort  this new array in descending by coordinate X
+ * 2. take first point, then iterate array and find point with less Y or min Y (if can't find less).
+ * Other point we need to add in some array and sort it in descending by coordinate X
  * 3. unit  the rest of points, and then unit array with discarded points.
  */
 public class SecondVersionDrawLine {
@@ -17,11 +15,20 @@ public class SecondVersionDrawLine {
 
     public static void main(String[] args) {
         Point.sortListOfPointByX(pointList);
+       // System.out.println("Point list size = " + (pointList.size() + 1));
         List<Point> resultList = getRightOrderList();
+       // System.out.println("After unit size = " + resultList.size());
+       /* for (Point mPoint : pointList) {
+            if (!resultList.contains(mPoint)) {
+                System.out.println("We lost this " + mPoint.toString());
+            }
+
+        }*/
         System.out.println("order of points:");
         for (Point point : resultList) {
             System.out.println(point + ";");
         }
+
     }
 
     private static List<Point> getRightOrderList() {
@@ -29,28 +36,65 @@ public class SecondVersionDrawLine {
         // get smallest and bigest point by x. remove its from array
         Point firstPoint = pointList.get(0);
         Point lastPoint = pointList.get(pointList.size() - 1);
+        //System.out.println("first: " + firstPoint.toString());
+       // System.out.println("last: " + lastPoint.toString());
         pointList.remove(firstPoint);
-        pointList.remove(lastPoint);
         List<Point> discardedPoints = new ArrayList<>();
         resultList.add(firstPoint);
-        pointList.remove(0);
-        Iterator<Point> iter = pointList.iterator();
-        while (iter.hasNext()) {
-            Point point = iter.next();
-            if (point.getY() >= resultList.get(resultList.size() - 1).getY()) {
-                // This array will be sorted by X too, so we only revert it at next step
+
+        int indexLastAddedPoint = 0;
+        for (int i = 0; i < pointList.size(); i++) {
+            Point point = pointList.get(i);
+            if (i < indexLastAddedPoint) {
+                // it will be also sorted by X
                 discardedPoints.add(point);
-            } else {
-                //We can only add, because they are sorted by X
+            } else if (i == indexLastAddedPoint && i != 0) {/*NOP*/} else if (point.getY() <= resultList.get(resultList.size() - 1).getY()) {
+                indexLastAddedPoint = i;
                 resultList.add(point);
+            } else {
+                indexLastAddedPoint = addNextPointWithLessMinY(resultList, pointList, indexLastAddedPoint + 1);
+                if (!point.equals(resultList.get(resultList.size() - 1))) {
+                    discardedPoints.add(point);
+                }
             }
-            iter.remove();
+
         }
-        resultList.add(lastPoint);
-        Collections.reverse(discardedPoints);
-        resultList.addAll(discardedPoints);
+        if (!discardedPoints.isEmpty()) {
+            Collections.reverse(discardedPoints);
+            resultList.addAll(discardedPoints);
+        }
         resultList.add(firstPoint);// for closing
 
         return resultList;
+    }
+
+
+    private static int addNextPointWithLessMinY(List<Point> resultList, List<Point> points, int indexLastAddedPoint) {
+        Point pointResult = null;
+        Point lastAddedPoint = resultList.get(resultList.size() - 1);
+        int result = indexLastAddedPoint;
+        //find less Y
+        for (int j = indexLastAddedPoint; j < points.size(); j++) {
+            Point point = points.get(j);
+            if (point.getY() < lastAddedPoint.getY()) {
+                result = j;
+                pointResult = point;
+                break;
+            }
+        }
+        if (pointResult == null) {
+            //find min Y
+            pointResult = points.get(indexLastAddedPoint);
+            result = indexLastAddedPoint;
+            for (int j = indexLastAddedPoint; j < points.size(); j++) {
+                Point point = points.get(j);
+                if (point.getY() < pointResult.getY()) {
+                    result = j;
+                    pointResult = point;
+                }
+            }
+        }
+        resultList.add(pointResult);
+        return result;
     }
 }
